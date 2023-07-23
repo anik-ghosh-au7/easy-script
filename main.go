@@ -267,7 +267,13 @@ func main() {
 		os.Exit(1)
 	}
 
-	data, err := os.ReadFile(os.Args[1])
+	fileName := os.Args[1]
+	if !strings.HasSuffix(fileName, ".es") {
+		fmt.Println("Unsupported file type. Please provide a .es file to execute")
+		os.Exit(1)
+	}
+
+	data, err := os.ReadFile(fileName)
 	if err != nil {
 		panic(err)
 	}
