@@ -260,7 +260,7 @@ func Eval(nodes []Node) {
 	}
 }
 
-// Main function to read the es file and pass the content to the lexer, parser, and finally to the evaluator
+// Main function to read the content of a .es file and pass it to the lexer, parser, and finally to the evaluator
 func main() {
 	if len(os.Args) < 2 {
 		fmt.Println("Please provide a file to execute")
