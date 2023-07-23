@@ -8,6 +8,7 @@ import (
 	"strings"
 )
 
+// Defines different types of tokens
 const (
 	TokenConsole  = "CONSOLE"
 	TokenLog      = "LOG"
@@ -21,19 +22,23 @@ const (
 	TokenPower    = "POWER"
 )
 
+// Token struct
 type Token struct {
 	Type    string
 	Literal string
 }
 
+// Node interface
 type Node interface {
 	Execute() string
 }
 
+// Node type for console.log statements
 type ConsoleLogNode struct {
 	Arguments []Node
 }
 
+// Execute for ConsoleLogNode
 func (n *ConsoleLogNode) Execute() string {
 	args := make([]string, len(n.Arguments))
 	for i, arg := range n.Arguments {
@@ -42,74 +47,88 @@ func (n *ConsoleLogNode) Execute() string {
 	return strings.Join(args, " ")
 }
 
+// Node type for string literals
 type StringNode struct {
 	Value string
 }
 
+// Execute for StringNode
 func (n *StringNode) Execute() string {
 	return n.Value
 }
 
+// Node type for addition operation
 type PlusNode struct {
 	Left  Node
 	Right Node
 }
 
+// Execute for PlusNode
 func (n *PlusNode) Execute() string {
 	left, _ := strconv.Atoi(n.Left.Execute())
 	right, _ := strconv.Atoi(n.Right.Execute())
 	return strconv.Itoa(left + right)
 }
 
+// Node type for subtraction operation
 type MinusNode struct {
 	Left  Node
 	Right Node
 }
 
+// Execute for MinusNode
 func (n *MinusNode) Execute() string {
 	left, _ := strconv.Atoi(n.Left.Execute())
 	right, _ := strconv.Atoi(n.Right.Execute())
 	return strconv.Itoa(left - right)
 }
 
+// Node type for multiplication operation
 type MultiplyNode struct {
 	Left  Node
 	Right Node
 }
 
+// Execute for MultiplyNode
 func (n *MultiplyNode) Execute() string {
 	left, _ := strconv.Atoi(n.Left.Execute())
 	right, _ := strconv.Atoi(n.Right.Execute())
 	return strconv.Itoa(left * right)
 }
 
+// Node type for division operation
 type DivideNode struct {
 	Left  Node
 	Right Node
 }
 
+// Execute for DivideNode
 func (n *DivideNode) Execute() string {
 	left, _ := strconv.Atoi(n.Left.Execute())
 	right, _ := strconv.Atoi(n.Right.Execute())
 	return strconv.Itoa(left / right)
 }
 
+// Node type for modulo operation
 type ModuloNode struct {
 	Left  Node
 	Right Node
 }
 
+// Execute for ModuloNode
 func (n *ModuloNode) Execute() string {
 	left, _ := strconv.Atoi(n.Left.Execute())
 	right, _ := strconv.Atoi(n.Right.Execute())
 	return strconv.Itoa(left % right)
 }
 
+// Node type for power operation
 type PowerNode struct {
 	Left  Node
 	Right Node
 }
 
+// Execute for PowerNode
 func (n *PowerNode) Execute() string {
 	left, _ := strconv.Atoi(n.Left.Execute())
 	right, _ := strconv.Atoi(n.Right.Execute())
@@ -117,14 +136,17 @@ func (n *PowerNode) Execute() string {
 	return strconv.Itoa(int(result))
 }
 
+// Node type for integer literals
 type IntNode struct {
 	Value string
 }
 
+// Execute for IntNode
 func (n *IntNode) Execute() string {
 	return n.Value
 }
 
+// Lex function to convert the input string into tokens
 func Lex(input string) []Token {
 	tokens := []Token{}
 	statements := strings.Split(input, ";")
@@ -185,6 +207,7 @@ func Lex(input string) []Token {
 	return tokens
 }
 
+// Parse function to convert the tokens into AST nodes
 func Parse(tokens []Token) []Node {
 	nodes := []Node{}
 
@@ -230,12 +253,14 @@ func Parse(tokens []Token) []Node {
 	return nodes
 }
 
+// Eval function to take a slice of nodes (AST) and evaluate them
 func Eval(nodes []Node) {
 	for _, node := range nodes {
 		fmt.Println(node.Execute())
 	}
 }
 
+// Main function to read the es file and pass the content to the lexer, parser, and finally to the evaluator
 func main() {
 	if len(os.Args) < 2 {
 		fmt.Println("Please provide a file to execute")
